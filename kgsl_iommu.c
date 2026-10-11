@@ -9,6 +9,7 @@
 #include <linux/io.h>
 #include <linux/iopoll.h>
 #include <linux/of_platform.h>
+#include <linux/of_address.h>
 #include <linux/scatterlist.h>
 #include <linux/qcom-iommu-util.h>
 #include <linux/qcom-io-pgtable.h>
@@ -2594,7 +2595,7 @@ static void kgsl_iommu_check_config(struct kgsl_mmu *mmu,
 
 int kgsl_iommu_bind(struct kgsl_device *device, struct platform_device *pdev)
 {
-	u32 val[2];
+	struct resource res;
 	int ret, i;
 	struct kgsl_iommu *iommu = KGSL_IOMMU(device);
 	struct kgsl_mmu *mmu = &device->mmu;
@@ -2610,7 +2611,7 @@ int kgsl_iommu_bind(struct kgsl_device *device, struct platform_device *pdev)
 		}
 	}
 
-	ret = of_property_read_u32_array(node, "reg", val, 2);
+	ret = of_address_to_resource(node, 0, &res);
 	if (ret) {
 		dev_err(&device->pdev->dev,
 			"%pOF: Unable to read KGSL IOMMU register range\n",
@@ -2618,7 +2619,7 @@ int kgsl_iommu_bind(struct kgsl_device *device, struct platform_device *pdev)
 		goto err;
 	}
 
-	iommu->regbase = devm_ioremap(&device->pdev->dev, val[0], val[1]);
+	iommu->regbase = devm_ioremap(&device->pdev->dev, res.start, resource_size(&res));
 	if (!iommu->regbase) {
 		dev_err(&device->pdev->dev, "Couldn't map IOMMU registers\n");
 		ret = -ENOMEM;
