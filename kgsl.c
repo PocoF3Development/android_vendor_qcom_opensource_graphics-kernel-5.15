@@ -16,7 +16,7 @@
 #include <linux/mem-buf.h>
 #include <linux/mman.h>
 #include <linux/mm_types.h>
-#include <linux/msm_kgsl.h>
+#include "include/linux/msm_kgsl.h"
 #include <linux/msm_sysstats.h>
 #include <linux/of.h>
 #include <linux/of_fdt.h>

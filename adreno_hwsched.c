@@ -13,7 +13,7 @@
 #include "adreno_sysfs.h"
 #include "adreno_trace.h"
 #include "kgsl_timeline.h"
-#include <linux/msm_kgsl.h>
+#include "include/linux/msm_kgsl.h"
 
 /*
  * Number of commands that can be queued in a context before it sleeps
